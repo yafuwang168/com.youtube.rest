@@ -23,11 +23,13 @@ public class V1Inventory {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String returnAllPcParts() throws Exception {
+	public Response returnAllPcParts() throws Exception {
 		
 		PreparedStatement query = null;
 		String returnString = null;
 		Connection conn=null;
+		Response rb = null;
+		
 		
 		try {
 			conn=Oracle308tube.Oracle308tubeConn().getConnection(); // create  connection
@@ -43,13 +45,14 @@ public class V1Inventory {
 			query.close();  // close connection
 					
 			returnString = result.toString();  // convert JSONArray to a JSON string
+			rb = Response.ok(returnString).build();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		finally { if (conn!=null) conn.close(); }
 		
-		return returnString; 
+		return rb; 
 	}
 
 
