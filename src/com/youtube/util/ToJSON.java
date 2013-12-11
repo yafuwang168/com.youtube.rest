@@ -5,6 +5,8 @@ import org.codehaus.jettison.json.JSONObject;
 
 import java.sql.ResultSet;
 
+import org.owasp.esapi.ESAPI;
+
 public class ToJSON {
 
 	/**
@@ -17,6 +19,8 @@ public class ToJSON {
 	public JSONArray toJSONArray(ResultSet rs) throws Exception {
 		
 		JSONArray json = new JSONArray();
+		String temp = null;
+	
 		
 		try {
 			java.sql.ResultSetMetaData rsmd= rs.getMetaData();
@@ -63,8 +67,12 @@ public class ToJSON {
 						/*Debug*/System.out.println("ToJSON: NVARCHAR");
 					}
 					else if(rsmd.getColumnType(i)==java.sql.Types.VARCHAR){
-						obj.put(colName,  rs.getString(colName));
-						/*Debug*/System.out.println("ToJSON: VARCHAR");
+						temp = rs.getString(colName);
+						temp = ESAPI.encoder().canonicalize(temp);
+						temp = ESAPI.encoder().encodeForHTML(temp);
+						obj.put(colName,  temp);
+						//obj.put(colName,  rs.getString(colName));
+						/*Debug*///System.out.println("ToJSON: VARCHAR");
 					}
 					else if(rsmd.getColumnType(i)==java.sql.Types.TINYINT){
 						obj.put(colName,  rs.getInt(colName));
