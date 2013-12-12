@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.QueryParam;
 
 import org.codehaus.jettison.json.JSONArray;
 
@@ -16,15 +18,17 @@ import com.youtube.dao.Oracle308tube;
 import com.youtube.util.ToJSON;
 
 
-@Path("/v1/inventory")
-public class V1Inventory {
+@Path("/v2/inventory")
+public class V2Inventory {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response returnAllPcParts() throws Exception {
+	public Response returnBrandParts(@QueryParam("brand") String brand) throws Exception {
 		
-		PreparedStatement query = null;
 		String returnString = null;
+		JSONArray json = new JSONArray();
+
+		PreparedStatement query = null;
 		Connection conn=null;
 		Response rb = null;
 		
@@ -36,8 +40,7 @@ public class V1Inventory {
 			ResultSet rs = query.executeQuery();
 			
 			ToJSON toJson = new ToJSON();
-			JSONArray result = new JSONArray();
-			
+				
 			result = toJson.toJSONArray(rs);
 			
 			query.close();  // close connection
