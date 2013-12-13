@@ -111,7 +111,7 @@ public class V2Inventory {
 	
 		
 		String returnString = null;
-		JSONArray json = new JSONArray();
+		//JSONArray json = new JSONArray();
 		Schema308tube dao = new Schema308tube();
 		
 		try {
@@ -120,7 +120,7 @@ public class V2Inventory {
 			ObjectMapper mapper = new ObjectMapper();
 			
 			ItemEntry item = mapper.readValue(incomingData, ItemEntry.class);
-			int http_code = dao.insertIntoPC_PARTS(item.PC_PARTS_TITLE, item.PC_PARTS_CODE, 
+			int http_code = dao.insertIntoPC_PARTS(item.PC_PARTS_PK, item.PC_PARTS_TITLE, item.PC_PARTS_CODE, 
 					item.PC_PARTS_MAKER, item.PC_PARTS_AVAIL, item.PC_PARTS_DESC);
 			
 			if (http_code==200){
@@ -140,6 +140,7 @@ public class V2Inventory {
 
 
 class ItemEntry {
+	public String PC_PARTS_PK;
 	public String PC_PARTS_TITLE;
 	public String PC_PARTS_CODE;
 	public String PC_PARTS_MAKER; 

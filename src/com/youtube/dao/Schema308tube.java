@@ -11,7 +11,8 @@ import com.youtube.util.ToJSON;
 
 public class Schema308tube extends Oracle308tube {
 
-	public int insertIntoPC_PARTS (	String PC_PARTS_TITLE, 
+	public int insertIntoPC_PARTS (	String PC_PARTS_PK, 
+									String PC_PARTS_TITLE, 
 									String PC_PARTS_CODE, 
 									String PC_PARTS_MAKER, 
 									String PC_PARTS_AVAIL, 
@@ -23,14 +24,15 @@ public class Schema308tube extends Oracle308tube {
 		try {
 			/* if this was a real application, you should do a validation on the data */
 			conn=oraclePcPartsConnection(); // create  connection
-			query = conn.prepareStatement("Insert into YAFU.PC_PARTS (PC_PARTS_TITLE,PC_PARTS_CODE,PC_PARTS_MAKER,PC_PARTS_AVAIL,PC_PARTS_DESC) values(?, ?, ?, ?, ?)");
+			query = conn.prepareStatement("Insert into YAFU.PC_PARTS (PC_PARTS_PK, PC_PARTS_TITLE,PC_PARTS_CODE,PC_PARTS_MAKER,PC_PARTS_AVAIL,PC_PARTS_DESC) values(?, ?, ?, ?, ?, ?)");
 			
-			query.setString(1, PC_PARTS_TITLE);
-			query.setString(2, PC_PARTS_CODE);
-			query.setString(3, PC_PARTS_MAKER);
+			query.setInt(1, Integer.parseInt(PC_PARTS_PK));
+			query.setString(2, PC_PARTS_TITLE);
+			query.setString(3, PC_PARTS_CODE);
+			query.setString(4, PC_PARTS_MAKER);
 
-			query.setInt(4, Integer.parseInt(PC_PARTS_AVAIL));
-			query.setString(5, PC_PARTS_DESC);
+			query.setInt(5, Integer.parseInt(PC_PARTS_AVAIL));
+			query.setString(6, PC_PARTS_DESC);
 
 		    query.executeUpdate();
 		    
