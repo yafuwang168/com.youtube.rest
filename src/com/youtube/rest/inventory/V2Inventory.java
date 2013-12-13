@@ -77,5 +77,29 @@ public class V2Inventory {
 		return Response.ok(returnString).build();
 	}
 
+	@Path("/{brand}/{item_number}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response returnSpecificBrandItem(@PathParam("brand") String brand, @PathParam("item_number") int item_number) throws Exception {
+	
+		
+		String returnString = null;
+		JSONArray json = new JSONArray();		
+		
+		try {
+	
+			Schema308tube sch = new Schema308tube();
+			
+			json = sch.queryReturnBrandItemNumber(brand, item_number);
+			returnString = json.toString();  // convert JSONArray to a JSON string
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Response.status(500).entity("Server was not able to process your request").build();
+		}
+		
+		return Response.ok(returnString).build();
+	}
+
 
 }
