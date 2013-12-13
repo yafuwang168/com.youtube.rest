@@ -11,6 +11,38 @@ import com.youtube.util.ToJSON;
 
 public class Schema308tube extends Oracle308tube {
 
+	public int insertIntoPC_PARTS (	String PC_PARTS_TITLE, 
+									String PC_PARTS_CODE, 
+									String PC_PARTS_MAKER, 
+									String PC_PARTS_AVAIL, 
+									String PC_PARTS_DESC  ) throws Exception {
+		
+		PreparedStatement query = null;
+		Connection conn=null;
+	
+		try {
+			/* if this was a real application, you should do a validation on the data */
+			conn=oraclePcPartsConnection(); // create  connection
+			query = conn.prepareStatement("Insert into YAFU.PC_PARTS (PC_PARTS_TITLE,PC_PARTS_CODE,PC_PARTS_MAKER,PC_PARTS_AVAIL,PC_PARTS_DESC) values(?, ?, ?, ?, ?)");
+			
+			query.setString(1, PC_PARTS_TITLE);
+			query.setString(2, PC_PARTS_CODE);
+			query.setString(3, PC_PARTS_MAKER);
+
+			query.setInt(4, Integer.parseInt(PC_PARTS_AVAIL));
+			query.setString(5, PC_PARTS_DESC);
+
+		    query.executeUpdate();
+		    
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return 500;  // Error
+		}
+		finally { if (conn!=null) conn.close(); }
+		return 200;  // Success
+	}
+	
 	public JSONArray queryReturnBrandParts(String brand) throws Exception {
 		
 		PreparedStatement query = null;
