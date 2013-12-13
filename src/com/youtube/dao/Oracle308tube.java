@@ -1,7 +1,14 @@
 package com.youtube.dao;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Connection;
+
 import javax.naming.*;
 import javax.sql.*;
+import javax.ws.rs.core.Response;
+
+import com.youtube.util.ToJSON;
 
 public class Oracle308tube {
 	private static DataSource Oracle308tube = null;
@@ -24,5 +31,17 @@ public class Oracle308tube {
 		}
 		
 		return Oracle308tube; 
+	}
+	
+	protected static Connection oraclePcPartsConnection()  {
+		Connection conn=null;
+		try {
+			conn=Oracle308tubeConn().getConnection(); // create  connection
+			return conn;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return conn;
 	}
 }

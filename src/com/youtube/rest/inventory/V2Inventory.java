@@ -15,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import org.codehaus.jettison.json.JSONArray;
 
 import com.youtube.dao.Oracle308tube;
+import com.youtube.dao.Schema308tube;
 import com.youtube.util.ToJSON;
 
 
@@ -26,34 +27,24 @@ public class V2Inventory {
 	public Response returnBrandParts(@QueryParam("brand") String brand) throws Exception {
 		
 		String returnString = null;
-		JSONArray json = new JSONArray();
-
-		PreparedStatement query = null;
-		Connection conn=null;
-		Response rb = null;
-		
+		JSONArray json = new JSONArray();		
 		
 		try {
-			conn=Oracle308tube.Oracle308tubeConn().getConnection(); // create  connection
-			query = conn.prepareStatement("select * from PC_PARTS");
 			
-			ResultSet rs = query.executeQuery();
+			if(brand==null) {
+				return Response.status(400).entity("Error: please specify brand for this search").build();
+			}
 			
-			ToJSON toJson = new ToJSON();
-				
-			result = toJson.toJSONArray(rs);
-			
-			query.close();  // close connection
-					
-			returnString = result.toString();  // convert JSONArray to a JSON string
-			rb = Response.ok(returnString).build();
+			Schema308tube sch = new Schema308tube();
+			json = sch.queryReturnBrandParts(brand);
+			returnString = json.toString();  // convert JSONArray to a JSON string
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			Response.status(500).entity("Server was not able to process your request").build();
 		}
-		finally { if (conn!=null) conn.close(); }
 		
-		return rb; 
+		return Response.ok(returnString).build();
 	}
 
 
