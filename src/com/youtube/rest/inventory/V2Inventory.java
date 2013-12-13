@@ -46,6 +46,36 @@ public class V2Inventory {
 		
 		return Response.ok(returnString).build();
 	}
+	
+	/* eliminate the QueryParam format
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response returnBrandParts(@QueryParam("brand") String brand) throws Exception {
+		return Response.status(400).entity("Error: please specify brand for this search").build();
+	}
+	*/
+	
+	@Path("/{brand}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response returnBrand(@PathParam("brand") String brand) throws Exception {
+		
+		String returnString = null;
+		JSONArray json = new JSONArray();		
+		
+		try {
+	
+			Schema308tube sch = new Schema308tube();
+			json = sch.queryReturnBrandParts(brand);
+			returnString = json.toString();  // convert JSONArray to a JSON string
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Response.status(500).entity("Server was not able to process your request").build();
+		}
+		
+		return Response.ok(returnString).build();
+	}
 
 
 }
